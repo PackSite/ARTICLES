@@ -1,10 +1,11 @@
 ﻿namespace Demo
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using BenchmarkDotNet.Attributes;
 
-    [SimpleJob]
-    [RankColumn]
+    [SimpleJob, RankColumn]
+    [SuppressMessage("Performance", "CA1822:Mark members as static")]
     public class Benchmarks
     {
         [Benchmark]

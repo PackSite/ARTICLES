@@ -4,10 +4,7 @@
     using System.Diagnostics.CodeAnalysis;
     using System.Runtime.InteropServices;
 
-    /// <summary>
-    /// <see cref="Guid"/> extensions.
-    /// </summary>
-    public static class GuidExtensions
+    public static partial class GuidExtensions
     {
         /// <summary>
         /// Converts <see cref="Guid"/> to uniform bucket identifier (a number in range 0-1023).
@@ -155,6 +152,21 @@
             {
                 return chunk0 ^ chunk1;
             }
+        }
+
+        /// <summary>
+        /// Converts <see cref="Guid"/> to <see cref="ulong"/>.
+        /// </summary>
+        /// <param name="guid"></param>
+        /// <returns></returns>
+        [SuppressMessage("Style", "IDE0057:Use range operator")]
+        public static void ToUInt64(this Guid guid, out ulong lower, out ulong upper)
+        {
+            Span<byte> bytes = stackalloc byte[16];
+            guid.TryWriteBytes(bytes);
+
+            lower = MemoryMarshal.Read<ulong>(bytes.Slice(0, 8));
+            upper = MemoryMarshal.Read<ulong>(bytes.Slice(8, 8));
         }
     }
 }
